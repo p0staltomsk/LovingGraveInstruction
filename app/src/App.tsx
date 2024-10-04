@@ -1,13 +1,13 @@
-import { useState } from "react";
-import Rpg from "@/components/Rpg";
+// import { useState } from "react";
+import RPGLandingPage2 from "./components/page2";
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   return (
     <>
       <div>
-        <Rpg />
+        <RPGLandingPage2 />
       </div>
     </>
   );

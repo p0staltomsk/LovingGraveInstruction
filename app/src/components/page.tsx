@@ -1,7 +1,5 @@
-import { useState } from "react";
+import React from "react";
 import { Sword, Shield, Heart, Zap, Send } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 
 // Мокап данных Redux
 const initialState = {
@@ -16,9 +14,9 @@ const initialState = {
   },
 };
 
-export default function Rpg() {
-  const [state, setState] = useState(initialState);
-  const [inputMessage, setInputMessage] = useState("");
+export default function RPGLandingPage() {
+  const [state, setState] = React.useState(initialState);
+  const [inputMessage, setInputMessage] = React.useState("");
 
   const sendMessage = () => {
     if (inputMessage.trim()) {
@@ -46,19 +44,19 @@ export default function Rpg() {
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <Link href="#" className="hover:text-gray-300">
+                <a href="#" className="hover:text-gray-300">
                   Главная
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="#" className="hover:text-gray-300">
+                <a href="#" className="hover:text-gray-300">
                   Об игре
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="#" className="hover:text-gray-300">
+                <a href="#" className="hover:text-gray-300">
                   Регистрация
-                </Link>
+                </a>
               </li>
             </ul>
           </nav>
@@ -182,15 +180,15 @@ export default function Rpg() {
         <div className="container mx-auto text-center">
           <p>&copy; 2024 Эльдория: Мир Приключений. Все права защищены.</p>
           <div className="mt-2">
-            <Link href="#" className="hover:text-gray-300 mr-4">
+            <a href="#" className="hover:text-gray-300 mr-4">
               Политика конфиденциальности
-            </Link>
-            <Link href="#" className="hover:text-gray-300 mr-4">
+            </a>
+            <a href="#" className="hover:text-gray-300 mr-4">
               Условия использования
-            </Link>
-            <Link href="#" className="hover:text-gray-300">
+            </a>
+            <a href="#" className="hover:text-gray-300">
               Контакты
-            </Link>
+            </a>
           </div>
         </div>
       </footer>
