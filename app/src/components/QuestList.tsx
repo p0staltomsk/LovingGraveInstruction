@@ -1,7 +1,6 @@
-// QuestList.tsx
-
 import React, { useEffect, useState } from "react";
 import { fetchQuests } from "../../api/quests.js";
+import { motion } from "framer-motion";
 
 const QuestList = () => {
   const [quests, setQuests] = useState([]);
@@ -36,12 +35,17 @@ const QuestList = () => {
     <div>
       <h1>Список квестов</h1>
       <ul>
-        {quests.map((quest) => (
-          <li key={quest.id}>
+        {quests.map((quest, index) => (
+          <motion.li
+            key={quest.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.3, duration: 0.5 }}
+          >
             <h2>{quest.title}</h2>
             <p>{quest.description}</p>
             <p>Сложность: {quest.difficulty}</p>
-          </li>
+          </motion.li>
         ))}
       </ul>
     </div>

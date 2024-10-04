@@ -60,13 +60,6 @@ export default function RPGLandingPage2() {
 
       <section className="py-12 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Available Quests</h2>
-          <QuestList quests={quests} /> {/* Используем компонент QuestList */}
-        </div>
-      </section>
-
-      <section className="py-12 md:py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <div className="space-y-6">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
@@ -244,6 +237,14 @@ export default function RPGLandingPage2() {
           </div>
         </div>
       </section>
+
+      <section className="py-12 md:py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold">Available Quests</h2>
+          <QuestList quests={quests} /> {/* Используем компонент QuestList */}
+        </div>
+      </section>
+
       <footer className="bg-[#2b2b2b] py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
