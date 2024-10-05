@@ -6,6 +6,8 @@ import { Story } from "./story";
 import { fetchQuests } from "../../api/quests.js"; // Импорт функции получения квестов
 import chatMockData from "../../api/chatMockData.json";
 
+const API_URL = 'http://localhost:5000/api';
+
 export default function RPGLandingPage2() {
   const [quests, setQuests] = useState([]);
   const [messages, setMessages] = useState(chatMockData.messages);
@@ -20,7 +22,7 @@ export default function RPGLandingPage2() {
     loadQuests();
   }, []);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e: any) => {
     e.preventDefault();
     if (newMessage.trim() === "") return;
 
@@ -162,8 +164,7 @@ export default function RPGLandingPage2() {
                     </div>
                   </div>
                 ))}
-                <h2 className="text-3xl font-bold">Available Quests</h2>
-                <QuestList quests={quests} />
+                
               </div>
               <form onSubmit={handleSendMessage} className="bg-[#2b2b2b] px-4 py-3 flex items-center gap-2">
                 <input
@@ -189,9 +190,12 @@ export default function RPGLandingPage2() {
                     />
                   </svg>
                 </button>
-              </form>
+              </form>             
 
             </div>
+
+            <h2 className="text-3xl font-bold">Available Quests</h2>
+                <QuestList quests={quests} />
           </div>
         </div>        
       </section>
