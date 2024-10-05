@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { fetchQuests } from "../../api/quests.js";
+import { fetchQuests } from "../../api/quests";
 import { motion } from "framer-motion";
 
-const QuestList = () => {
-  const [quests, setQuests] = useState([]);
+interface QuestListProps {
+  quests: Quest[];
+}
+
+interface Quest {
+  id: number;
+  title: string;
+  description: string;
+  difficulty: string;
+}
+
+const QuestList: React.FC<QuestListProps> = ({ quests: initialQuests }) => {
+  const [quests, setQuests] = useState(initialQuests);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,7 +25,7 @@ const QuestList = () => {
         const data = await fetchQuests();
         setQuests(data);
       } catch (err) {
-        setError("Ошибка при загрузке данных");
+        setError("Ошибка при загрузке данных" as any);
       } finally {
         setLoading(false);
       }
@@ -44,7 +55,7 @@ const QuestList = () => {
           >
             <h2>{quest.title}</h2>
             <p>{quest.description}</p>
-            <p>Сложность: {quest.difficulty}</p>
+            <p>Difficulty: {quest.difficulty}</p>
           </motion.li>
         ))}
       </ul>

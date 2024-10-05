@@ -1,0 +1,70 @@
+{
+    "messages": [
+      {
+        "id": 1,
+        "sender": {
+          "name": "Merlin",
+          "avatar": "🧙‍♂️",
+          "avatarBg": "#55efc4"
+        },
+        "content": "Greetings, adventurers! I have a quest for you.",
+        "timestamp": "10:45 PM",
+        "actions": [
+          { "text": "Accept", "color": "#55efc4" },
+          { "text": "Decline", "color": "#b2bec3" }
+        ]
+      },
+      {
+        "id": 2,
+        "sender": {
+          "name": "Elara",
+          "avatar": "🧝‍♀️",
+          "avatarBg": "#fdcb6e"
+        },
+        "content": "I will join you, Merlin. What is the quest?",
+        "timestamp": "10:47 PM",
+        "actions": [
+          { "text": "Explore", "color": "#fdcb6e" }
+        ]
+      },
+      {
+        "id": 3,
+        "sender": {
+          "name": "Grok",
+          "avatar": "🧟‍♂️",
+          "avatarBg": "#ff7675"
+        },
+        "content": "I will crush any foes that stand in our way!",
+        "timestamp": "10:50 PM",
+        "actions": [
+          { "text": "Smash", "color": "#ff7675" }
+        ]
+      },
+      {
+        "id": 4,
+        "sender": {
+          "name": "Zara",
+          "avatar": "🧙‍♀️",
+          "avatarBg": "#a29bfe"
+        },
+        "content": "I will provide magical support. Let us begin!",
+        "timestamp": "10:52 PM",
+        "actions": [
+          { "text": "Cast Spell", "color": "#a29bfe" }
+        ]
+      },
+      {
+        "id": 5,
+        "sender": {
+          "name": "Merlin",
+          "avatar": "🧙‍♂️",
+          "avatarBg": "#55efc4"
+        },
+        "content": "Excellent, let us venture forth and vanquish the evil that plagues these lands!",
+        "timestamp": "10:55 PM",
+        "actions": [
+          { "text": "Lead the Way", "color": "#55efc4" }
+        ]
+      }
+    ]
+  }

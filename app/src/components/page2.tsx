@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import QuestList from "./QuestList"; // Импортируем компонент QuestList
 import { Story } from "./story";
 import { fetchQuests } from "../../api/quests.js"; // Импорт функции получения квестов
+import chatMockData from "../../api/chatMockData.json";
 
 export default function RPGLandingPage2() {
   const [quests, setQuests] = useState([]);
+  const [messages, setMessages] = useState(chatMockData.messages);
+  const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
     async function loadQuests() {
@@ -16,6 +19,26 @@ export default function RPGLandingPage2() {
 
     loadQuests();
   }, []);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (newMessage.trim() === "") return;
+
+    const userMessage = {
+      id: messages.length + 1,
+      sender: {
+        name: "You",
+        avatar: "👤",
+        avatarBg: "#74b9ff"
+      },
+      content: newMessage,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      actions: []
+    };
+
+    setMessages([...messages, userMessage]);
+    setNewMessage("");
+  };
 
   return (
     <div className="bg-[#1a1a1a] text-white">
@@ -56,9 +79,8 @@ export default function RPGLandingPage2() {
               Sign Up
             </button>
           </div>
-        </div>
+        </div>        
       </header>
-
       <section className="py-12 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
@@ -77,8 +99,9 @@ export default function RPGLandingPage2() {
                 <button className="text-sm border border-[#55efc4] text-[#55efc4] px-4 py-2 rounded-md hover:bg-[#55efc4] hover:text-[#1a1a1a]">
                   Learn More
                 </button>
-              </div>
-            </div>
+              </div>              
+              <Story />
+            </div>            
             <div className="bg-[#1e1e1e] text-white rounded-xl overflow-hidden w-full">
               <div className="flex items-center justify-between bg-[#2b2b2b] px-4 py-3">
                 <div className="flex items-center gap-2">
@@ -108,116 +131,49 @@ export default function RPGLandingPage2() {
                   </div>
                 </div>
               </div>
-              <div className="p-4 space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#55efc4] rounded-full w-12 h-12 flex items-center justify-center text-3xl">
-                    🧙‍♂️
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="font-bold">Merlin</div>
-                      <div className="text-[#b2bec3]">10:45 PM</div>
+              
+              <div className="p-4 space-y-4 flex-grow overflow-y-auto">
+                {messages.map((message) => (
+                  <div key={message.id} className="flex items-start gap-4">
+                    <div className={`rounded-full w-12 h-12 flex items-center justify-center text-3xl`} style={{ backgroundColor: message.sender.avatarBg }}>
+                      {message.sender.avatar}
                     </div>
-                    <div>
-                      <p>Greetings, adventurers! I have a quest for you.</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="text-sm bg-[#55efc4] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Accept
-                      </button>
-                      <button className="text-sm bg-[#b2bec3] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Decline
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#fdcb6e] rounded-full w-12 h-12 flex items-center justify-center text-3xl">
-                    🧝‍♀️
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="font-bold">Elara</div>
-                      <div className="text-[#b2bec3]">10:47 PM</div>
-                    </div>
-                    <div>
-                      <p>I will join you, Merlin. What is the quest?</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="text-sm bg-[#fdcb6e] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Explore
-                      </button>
+                    <div className="grid gap-1 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="font-bold">{message.sender.name}</div>
+                        <div className="text-[#b2bec3]">{message.timestamp}</div>
+                      </div>
+                      <div>
+                        <p>{message.content}</p>
+                      </div>
+                      {message.actions.length > 0 && (
+                        <div className="flex items-center gap-2">
+                          {message.actions.map((action, index) => (
+                            <button
+                              key={index}
+                              className="text-sm font-bold px-2 py-1 rounded-full"
+                              style={{ backgroundColor: action.color, color: '#1e1e1e' }}
+                            >
+                              {action.text}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#ff7675] rounded-full w-12 h-12 flex items-center justify-center text-3xl">
-                    🧟‍♂️
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="font-bold">Grok</div>
-                      <div className="text-[#b2bec3]">10:50 PM</div>
-                    </div>
-                    <div>
-                      <p>I will crush any foes that stand in our way!</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="text-sm bg-[#ff7675] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Smash
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#a29bfe] rounded-full w-12 h-12 flex items-center justify-center text-3xl">
-                    🧙‍♀️
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="font-bold">Zara</div>
-                      <div className="text-[#b2bec3]">10:52 PM</div>
-                    </div>
-                    <div>
-                      <p>I will provide magical support. Let us begin!</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="text-sm bg-[#a29bfe] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Cast Spell
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="bg-[#55efc4] rounded-full w-12 h-12 flex items-center justify-center text-3xl">
-                    🧙‍♂️
-                  </div>
-                  <div className="grid gap-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="font-bold">Merlin</div>
-                      <div className="text-[#b2bec3]">10:55 PM</div>
-                    </div>
-                    <div>
-                      <p>
-                        Excellent, let us venture forth and vanquish the evil
-                        that plagues these lands!
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button className="text-sm bg-[#55efc4] text-[#1e1e1e] font-bold px-2 py-1 rounded-full">
-                        Lead the Way
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
+                <h2 className="text-3xl font-bold">Available Quests</h2>
+                <QuestList quests={quests} />
               </div>
-              <div className="bg-[#2b2b2b] px-4 py-3 flex items-center gap-2">
+              <form onSubmit={handleSendMessage} className="bg-[#2b2b2b] px-4 py-3 flex items-center gap-2">
                 <input
                   type="text"
                   placeholder="Type your message..."
                   className="bg-[#1e1e1e] border-none rounded-full px-4 py-2 flex-1 text-sm"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
                 />
-                <button className="text-sm bg-[#55efc4] text-[#1e1e1e] rounded-full px-3 py-2">
+                <button type="submit" className="text-sm bg-[#55efc4] text-[#1e1e1e] rounded-full px-3 py-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -233,27 +189,12 @@ export default function RPGLandingPage2() {
                     />
                   </svg>
                 </button>
-              </div>
+              </form>
+
             </div>
           </div>
-        </div>
+        </div>        
       </section>
-
-      <div className="flex flex-col md:flex-row gap-8">
-        <section className="flex-1 py-12 md:py-24 lg:py-32">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold">Available Quests</h2>
-            <QuestList quests={quests} /> {/* Используем компонент QuestList */}
-          </div>
-        </section>
-
-        <section className="flex-1 py-12 md:py-24 lg:py-32">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <Story />
-          </div>
-        </section>
-      </div>
-
       <footer className="bg-[#2b2b2b] py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
