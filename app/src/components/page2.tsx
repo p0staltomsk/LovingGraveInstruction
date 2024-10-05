@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import QuestList from "./QuestList"; // Импортируем компонент QuestList
+import { Story } from "./story";
 import { fetchQuests } from "../../api/quests.js"; // Импорт функции получения квестов
 
 export default function RPGLandingPage2() {
@@ -238,12 +239,20 @@ export default function RPGLandingPage2() {
         </div>
       </section>
 
-      <section className="py-12 md:py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold">Available Quests</h2>
-          <QuestList quests={quests} /> {/* Используем компонент QuestList */}
-        </div>
-      </section>
+      <div className="flex flex-col md:flex-row gap-8">
+        <section className="flex-1 py-12 md:py-24 lg:py-32">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold">Available Quests</h2>
+            <QuestList quests={quests} /> {/* Используем компонент QuestList */}
+          </div>
+        </section>
+
+        <section className="flex-1 py-12 md:py-24 lg:py-32">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+            <Story />
+          </div>
+        </section>
+      </div>
 
       <footer className="bg-[#2b2b2b] py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
