@@ -16,6 +16,46 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => console.log("Подключено к MongoDB"))
   .catch(err => console.error("Ошибка подключения к MongoDB:", err));
 
+// Определение схемы и модели сообщения
+const MessageSchema = new mongoose.Schema({
+  sender: {
+    name: String,
+    avatar: String,
+    avatarBg: String
+  },
+  content: String,
+  timestamp: Date,
+  actions: [{
+    text: String,
+    color: String
+  }]
+});
+
+const Message = mongoose.model('Message', MessageSchema);
+
+// API для получения всех сообщений
+app.get('/api/messages', async (req, res) => {
+  try {
+    const messages = await Message.find().sort({ timestamp: 1 });
+    res.json(messages);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// API для сохранения нового сообщения
+app.post('/api/messages', async (req, res) => {
+  const message = new Message(req.body);
+  try {
+    const savedMessage = await message.save();
+    res.status(201).json(savedMessage);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// grog
+
 app.post('/api/groq', async (req, res) => {
   const { prompt, model } = req.body;
   const apiKey = process.env.GROQ_API_KEY;

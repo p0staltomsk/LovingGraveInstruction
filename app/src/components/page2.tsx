@@ -1,33 +1,40 @@
-// page2.tsx
-
-import { useEffect, useState } from "react";
-import QuestList from "./QuestList"; // Импортируем компонент QuestList
+import { useEffect, useState, useRef } from "react";
+import QuestList from "./QuestList";
 import { Story } from "./story";
-import { fetchQuests } from "../../api/quests.js"; // Импорт функции получения квестов
-import chatMockData from "../../api/chatMockData.json";
-
-const API_URL = 'http://localhost:5000/api';
+import { fetchQuests } from "../../api/quests";
+import { fetchMessages, saveMessage } from "../../api/messages";
 
 export default function RPGLandingPage2() {
   const [quests, setQuests] = useState([]);
-  const [messages, setMessages] = useState(chatMockData.messages);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    async function loadQuests() {
-      const data = await fetchQuests();
-      setQuests(data);
+    async function loadData() {
+      const [questsData, messagesData] = await Promise.all([
+        fetchQuests(),
+        fetchMessages()
+      ]);
+      setQuests(questsData);
+      setMessages(messagesData);
     }
-
-    loadQuests();
+    loadData();
   }, []);
 
-  const handleSendMessage = (e: any) => {
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() === "") return;
 
     const userMessage = {
-      id: messages.length + 1,
       sender: {
         name: "You",
         avatar: "👤",
@@ -38,8 +45,13 @@ export default function RPGLandingPage2() {
       actions: []
     };
 
-    setMessages([...messages, userMessage]);
-    setNewMessage("");
+    try {
+      const savedMessage = await saveMessage(userMessage);
+      setMessages([...messages, savedMessage]);
+      setNewMessage("");
+    } catch (error) {
+      console.error("Failed to save message:", error);
+    }
   };
 
   return (
@@ -134,9 +146,9 @@ export default function RPGLandingPage2() {
                 </div>
               </div>
               
-              <div className="p-4 space-y-4 flex-grow overflow-y-auto">
+              <div className="p-4 space-y-4 flex-grow overflow-y-auto h-[400px]">
                 {messages.map((message) => (
-                  <div key={message.id} className="flex items-start gap-4">
+                  <div key={message._id} className="flex items-start gap-4">
                     <div className={`rounded-full w-12 h-12 flex items-center justify-center text-3xl`} style={{ backgroundColor: message.sender.avatarBg }}>
                       {message.sender.avatar}
                     </div>
@@ -148,7 +160,7 @@ export default function RPGLandingPage2() {
                       <div>
                         <p>{message.content}</p>
                       </div>
-                      {message.actions.length > 0 && (
+                      {message.actions && message.actions.length > 0 && (
                         <div className="flex items-center gap-2">
                           {message.actions.map((action, index) => (
                             <button
@@ -164,7 +176,7 @@ export default function RPGLandingPage2() {
                     </div>
                   </div>
                 ))}
-                
+                <div ref={messagesEndRef} />
               </div>
               <form onSubmit={handleSendMessage} className="bg-[#2b2b2b] px-4 py-3 flex items-center gap-2">
                 <input
@@ -191,11 +203,10 @@ export default function RPGLandingPage2() {
                   </svg>
                 </button>
               </form>             
-
             </div>
 
-            <h2 className="text-3xl font-bold">Available Quests</h2>
-                <QuestList quests={quests} />
+            <h2 className="text-3xl font-bold">Available Quests:</h2>
+            <QuestList quests={quests} />
           </div>
         </div>        
       </section>

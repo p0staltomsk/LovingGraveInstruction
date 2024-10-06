@@ -43,8 +43,7 @@ const QuestList: React.FC<QuestListProps> = ({ quests: initialQuests }) => {
   }
 
   return (
-    <div>
-      <h1>Список квестов</h1>
+    <div>      
       <ul>
         {quests.map((quest, index) => (
           <motion.li

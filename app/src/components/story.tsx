@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { BotIcon, RefreshCwIcon, SaveIcon } from 'lucide-react';
 
-async function askGroq(prompt: string, model: string = "llama3-8b-8192") {
+async function askGroq(prompt: string, model: string = "llama3-70b-8192") {
   try {
     const response = await fetch("http://localhost:5000/api/groq", {
       method: "POST",
@@ -29,15 +29,16 @@ export function Story() {
   const [story, setStory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isInitialMount = useRef(true);
 
-  const generateNewStory = async () => {
+  const generateNewStory = async () => {     
     setIsLoading(true);
     setError(null);
     try {
-      const prompt = "Сгенерируйте короткую историю с началом, серединой и концом. История должна быть творческой и увлекательной.";
+      const prompt = "Generate a short fantasy story introduction. The story should be creative and engaging. Limit it to a nice paragraph of no more than 150 tokens for a text visual widget. A couple of character names, the name of the universe/era/literary or game style are welcome. But dont use exist popular names - create some new. (dont use names like: Elyria/Eldrador/Eldrida/Khaeridia/Lyra Flynn).";
       const newStory = await askGroq(prompt);
-      setStory(newStory);
-    } catch (error) {
+      setStory(newStory + '...');
+    } catch (error: any) {
       console.error("Подробная ошибка:", error);
       setError(`Не удалось сгенерировать историю: ${error.message}`);
     } finally {
@@ -46,7 +47,10 @@ export function Story() {
   };
 
   useEffect(() => {
-    generateNewStory();
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      generateNewStory();
+    }
   }, []);
 
   const saveStory = () => {
